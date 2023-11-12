@@ -10,9 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2023_11_12_174936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "movies", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.integer "year"
+    t.string "director"
+    t.string "actor"
+    t.string "filming_location"
+    t.string "country"
+    t.decimal "average_rating", precision: 10, scale: 2, default: "0.0"
+    t.decimal "decimal", precision: 10, scale: 2, default: "0.0"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["actor"], name: "index_movies_on_actor"
+    t.index ["average_rating"], name: "index_movies_on_average_rating"
+  end
 
 end
