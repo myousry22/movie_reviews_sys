@@ -50,6 +50,17 @@ class ReviewsController < ApplicationController
         format.html { redirect_to movie_reviews_url, notice: 'Review was successfully destroyed.' }
       end
     end
+
+    def import
+        return redirect_to request.referer, notice: 'No file added' if params[:file].nil?
+      
+        unless params[:file].content_type == 'text/csv'
+          return redirect_to request.referer,
+                             notice: 'Only CSV files allowed'
+        end
+        ImportReviewCsv.new(params[:file]).call
+        redirect_to request.referer, notice: 'Import started async, please refresh your page after some minutes..'
+      end
   
   
     private
