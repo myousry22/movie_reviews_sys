@@ -22,5 +22,7 @@ module MoviesReviewsSys
     config.paths.add File.join('app', 'services'), glob: File.join('**', '*.rb')
     config.autoload_paths += Dir[Rails.root.join('app', '*')]
     config.active_job.queue_adapter = :sidekiq
+
+    config.cache_store = :redis_cache_store, { url: 'redis://localhost:6379/0' }
   end
 end

@@ -22,6 +22,7 @@ gem 'rails-observers', '~> 0.1.2'
 gem 'ransack', '~> 3.2', '>= 3.2.1'
 
 gem 'sidekiq'
+gem 'redis'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password

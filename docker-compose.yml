@@ -21,6 +21,19 @@ services:
       POSTGRES_DB: movies_reviews_sys
     volumes:
       - pg_data:/var/lib/postgresql/data
+  # sidekiq:
+    # build: .
+    # command: ["bundle", "exec", "sidekiq"]
+    # volumes:
+      # - ".:/app"
+    # depends_on:
+      # - redis
+
+  # redis:
+    # image: "redis:latest"
+    # ports:
+      # - "6379:6379"
+    # command: ["redis-server", "--bind", "0.0.0.0"]
 
 volumes:
   pg_data:

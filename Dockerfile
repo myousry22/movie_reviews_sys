@@ -4,7 +4,7 @@ FROM ruby:3.0.2
 # Set the working directory within the container
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y nodejs yarn
+RUN apt-get update && apt-get install -y nodejs yarn redis-server
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.22.11
 ENV PATH="/root/.yarn/bin:${PATH}"
 
