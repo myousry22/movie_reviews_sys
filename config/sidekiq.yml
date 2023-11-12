@@ -1,0 +1,8 @@
+---
+:verbose: false
+:concurrency: 2
+:max_retries: 3
+:timeout: 10
+
+:queues:
+  - default
