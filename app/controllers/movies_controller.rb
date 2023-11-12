@@ -1,13 +1,13 @@
 class MoviesController < ApplicationController
     before_action :set_movie, only: %i[show edit update destroy]
   
-    # GET /movies or /movies.json
+    # GET /movies
     def index
       @q = Movie.includes(:reviews).ransack(params[:q])
       @movies = @q.result
     end
   
-    # GET /movies/1 or /movies/1.json
+    # GET /movies/1
     def show; end
   
     # GET /movies/new
@@ -18,7 +18,7 @@ class MoviesController < ApplicationController
     # GET /movies/1/edit
     def edit; end
   
-    # POST /movies or /movies.json
+    # POST /movies 
     def create
       @movie = Movie.new(movie_params)
   
@@ -31,7 +31,7 @@ class MoviesController < ApplicationController
       end
     end
   
-    # PATCH/PUT /movies/1 or /movies/1.json
+    # PATCH/PUT /movies/1 
     def update
       respond_to do |format|
         if @movie.update(movie_params)
@@ -42,13 +42,23 @@ class MoviesController < ApplicationController
       end
     end
   
-    # DELETE /movies/1 or /movies/1.json
+    # DELETE /movies/1
     def destroy
       @movie.destroy
   
       respond_to do |format|
         format.html { redirect_to movies_url, notice: 'Movie was successfully destroyed.' }
       end
+    end
+
+    def import
+        return redirect_to request.referer, notice: 'No file added' if params[:file].nil?
+        unless params[:file].content_type == 'text/csv'
+          return redirect_to request.referer,
+                             notice: 'Only CSV files allowed'
+        end
+        ImportMovieCsv.new(params[:file]).call
+        redirect_to request.referer, notice: 'Import started async, please refresh your page after some minutes...'
     end
   
     private
