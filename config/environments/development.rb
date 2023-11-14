@@ -16,6 +16,10 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
+  config.active_job.queue_adapter = :sidekiq
+  config.web_console.whitelisted_ips = '172.19.0.1'
+  config.cache_store = :redis_store, "redis://movies_reviews_sys_redis_1:6380/0/cache", { expires_in: 90.minutes }
+
   if Rails.root.join('tmp', 'caching-dev.txt').exist?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true

@@ -8,11 +8,15 @@ services:
       - .:/app
     depends_on:
       - db
+      - redis
     environment:
       RAILS_ENV: development
       DATABASE_URL: postgres://root:root@db:5432/movies_reviews_sys
     stdin_open: true
     tty: true
+    networks: 
+      - movies_reviews_sys_movie_app_network
+
   db:
     image: postgres:14
     environment:
@@ -21,19 +25,37 @@ services:
       POSTGRES_DB: movies_reviews_sys
     volumes:
       - pg_data:/var/lib/postgresql/data
-  # sidekiq:
-    # build: .
-    # command: ["bundle", "exec", "sidekiq"]
-    # volumes:
-      # - ".:/app"
-    # depends_on:
-      # - redis
+    networks: 
+      - movies_reviews_sys_movie_app_network
 
-  # redis:
-    # image: "redis:latest"
-    # ports:
-      # - "6379:6379"
-    # command: ["redis-server", "--bind", "0.0.0.0"]
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6380
+      REDIS_DB: 0
+    volumes:
+      - ".:/app"
+    depends_on:
+      - redis
+    networks: 
+      - movies_reviews_sys_movie_app_network
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6380:6380"
+    command: ["redis-server", "--bind", "0.0.0.0", "--port", "6380"]
+    networks: 
+      - movies_reviews_sys_movie_app_network
+
+
+networks:
+  movies_reviews_sys_movie_app_network:
+    driver: bridge
 
 volumes:
   pg_data:
+
+
