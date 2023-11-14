@@ -23,7 +23,12 @@ default: &default
 
 development:
   <<: *default
-  database: movies_reviews_sys_development
+  database: movies_reviews_sys
+  pool: 5
+  username: root
+  password: root
+  host: db
+
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
